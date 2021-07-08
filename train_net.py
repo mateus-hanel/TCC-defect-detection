@@ -33,7 +33,7 @@ def parse_args():
 
     parser.add_argument('--FOLD', type=int, default=None, help="Which fold (KSDD) or class (DAGM) to train.")
     parser.add_argument('--TRAIN_NUM', type=int, default=None, help="Number of positive training samples for KSDD or STEEL.")
-    parser.add_argument('--NUM_SEGMENTED', type=int, required=True, default=None, help="Number of segmented positive  samples.")
+    parser.add_argument('--NUM_SEGMENTED', type=str, required=True, default=None, help="Number of segmented positive  samples.")
     parser.add_argument('--RESULTS_PATH', type=str, default=None, help="Directory to which results are saved.")
 
     parser.add_argument('--VALIDATE', type=str2bool, default=None, help="Whether to validate during training.")
