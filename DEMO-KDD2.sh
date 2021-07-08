@@ -10,7 +10,7 @@ run_DEMO_EXPERIMENTS()
   GPUS=($@)
 
   # best results on KolektorSDD2 dataset
-  train_single $SAVE_IMAGES KSDD2 $KSDD2_PATH SMALL_1 $RESULTS_PATH 15 -1 247 50 0.01 1 10 True  2 3 True  True  True  ${GPUS[0]}
+  train_single $SAVE_IMAGES KSDD2 $KSDD2_PATH test_53_flip $RESULTS_PATH 15 -1 .\\splits\\KSDD2\\split_53_flip.pyb 50 0.01 1 10 True  2 3 True  True  True  ${GPUS[0]}
 
 }
 
@@ -21,4 +21,3 @@ if [ "${#GPUS[@]}" -eq 0 ]; then
   #GPUS=(0 1 2) # if more GPUs available
 fi
 run_DEMO_EXPERIMENTS   ./results True "${GPUS[@]}"
-

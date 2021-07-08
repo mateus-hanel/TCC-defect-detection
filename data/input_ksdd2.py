@@ -5,9 +5,8 @@ from data.dataset import Dataset
 from config import Config
 
 
-def read_split(num_segmented: int, kind: str):
-    fn = f"KSDD2/split_{num_segmented}.pyb"
-    with open(f"splits/{fn}", "rb") as f:
+def read_split(split_path: int, kind: str):
+    with open(split_path, "rb") as f:
         train_samples, test_samples = pickle.load(f)
         if kind == 'TRAIN':
             return train_samples
@@ -28,8 +27,16 @@ class KSDD2Dataset(Dataset):
         data_points = read_split(self.cfg.NUM_SEGMENTED, self.kind)
 
         for part, is_segmented in data_points:
-            image_path = os.path.join(self.path, self.kind.lower(), f"{part}.png")
-            seg_mask_path = os.path.join(self.path, self.kind.lower(), f"{part}_GT.png")
+
+            if self.kind == 'TRAIN':
+                image_path = part
+                seg_mask_path = image_path[:-4] + "_GT" + image_path[-4:]
+            else:
+                image_path = os.path.join(self.path, self.kind.lower(), f"{part}.png")
+                seg_mask_path = os.path.join(self.path, self.kind.lower(), f"{part}_GT.png")
+
+            #image_path = os.path.join(self.path, self.kind.lower(), f"{part}.png")
+            #seg_mask_path = os.path.join(self.path, self.kind.lower(), f"{part}_GT.png")
 
             image = self.read_img_resize(image_path, self.grayscale, self.image_size)
             seg_mask, positive = self.read_label_resize(seg_mask_path, self.image_size, self.cfg.DILATE)
