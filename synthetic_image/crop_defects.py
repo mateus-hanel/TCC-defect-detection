@@ -4,8 +4,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 import glob
 
-img_dir = r'..\datasets\KSDD2\train_defects'
-defect_out_dir = r'cropped_defects_train'
+img_dir = r'..\datasets\KSDD2\train_defects_16'
+defect_out_dir = r'cropped_defects_train_16'
 mask_ext = '.png'
 img_ext = '.png'
 margin = 0

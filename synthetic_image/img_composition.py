@@ -138,9 +138,9 @@ def try_compose(src_img, src_mask, dst_img, dst_mask, pt=None):
 
     res_mask = dst_mask.copy()
     res_mask[cy-y0:cy-y0+src_h, cx-x0:cx-x0+src_w] += src_mask
-    res_img = cv2.seamlessClone(src_img, dst_img, comp_mask, (cx, cy), cv2.MONOCHROME_TRANSFER)
+    #res_img = cv2.seamlessClone(src_img, dst_img, comp_mask, (cx, cy), cv2.MONOCHROME_TRANSFER)
     #res_img = cv2.seamlessClone(src_img, dst_img, comp_mask, (cx, cy), cv2.MIXED_CLONE)
-    #res_img = cv2.seamlessClone(src_img, dst_img, comp_mask, (cx, cy), cv2.NORMAL_CLONE)
+    res_img = cv2.seamlessClone(src_img, dst_img, comp_mask, (cx, cy), cv2.NORMAL_CLONE)
 
 
     return res_img, res_mask, True
@@ -148,7 +148,7 @@ def try_compose(src_img, src_mask, dst_img, dst_mask, pt=None):
 bg_glob = r".\bg\*[!_GT].png"
 bg_glob = r"..\datasets\KSDD2\train_ok\*[!_GT].png"
 
-fg_dir = r'.\cropped_defects_train'
+fg_dir = r'.\cropped_defects_train_16'
 out_dir = r'.\synthetic_test'
 
 gen_count = 1500 # numero de imagens na saída
