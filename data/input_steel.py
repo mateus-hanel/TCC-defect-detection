@@ -5,9 +5,10 @@ import pickle
 import pandas as pd
 
 
-def read_split(train_num: int, num_segmented: int, kind: str):
-    fn = f"STEEL/split_{train_num}_{num_segmented}.pyb"
-    with open(f"splits/{fn}", "rb") as f:
+def read_split(train_num: int, num_segmented: str, kind: str):
+    #fn = f"STEEL/split_{train_num}_{num_segmented}.pyb"
+
+    with open(num_segmented, "rb") as f:
         train_samples, test_samples, validation_samples = pickle.load(f)
         if kind == 'TRAIN':
             return train_samples
@@ -23,12 +24,21 @@ def read_annotations(fn):
     arr = np.array(pd.read_csv(fn), dtype=np.object)
     annotations_dict = {}
     for sample, _, rle in arr:
-        img_name = sample[:-4]
+        #img_name = sample[:-4]
+        img_name = sample
+
         annotations_dict[img_name] = rle
 
     return annotations_dict
 
+def read_annotations_old(fn):
+    arr = np.array(pd.read_csv(fn), dtype=np.object)
+    annotations_dict = {}
+    for sample, _, rle in arr:
+        img_name = sample[:-4]
+        annotations_dict[img_name] = rle
 
+    return annotations_dict
 class SteelDataset(Dataset):
     def __init__(self, kind, cfg):
         super(SteelDataset, self).__init__(cfg.DATASET_PATH, cfg, kind)
@@ -39,21 +49,34 @@ class SteelDataset(Dataset):
             raise Exception("Need to implement eager loading!")
 
         pos_samples, neg_samples = [], []
-
         fn = os.path.join(self.path, "train.csv")
-        annotations = read_annotations(fn)
-
         samples = read_split(self.cfg.TRAIN_NUM, self.cfg.NUM_SEGMENTED, self.kind)
-        for sample, is_segmented in samples:
-            img_name = f"{sample}.jpg"
-            img_path = os.path.join(self.path, "train_images", img_name)
 
-            if sample in annotations:
-                rle = list(map(int, annotations[sample].split(" ")))
-                pos_samples.append((None, None, None, is_segmented, img_path, rle, sample))
-            else:
-                neg_samples.append((None, None, None, True, img_path, None, sample))
+        if self.kind == 'TRAIN' or self.kind == 'VAL':
+            annotations = read_annotations(fn)
 
+            for img_path, is_segmented in samples:
+                #img_name = f"{sample}.jpg"
+                #img_path = os.path.join(self.path, "train_images", img_name)
+                sample = img_path.split("\\")[-1][:-4]
+                if img_path in annotations:
+                    rle = list(map(int, annotations[img_path].split(" ")))
+                    pos_samples.append((None, None, None, is_segmented, img_path, rle, sample))
+                else:
+                    neg_samples.append((None, None, None, True, img_path, None, sample))
+        else:
+            fn = os.path.join(self.path, "train_old.csv")
+            annotations = read_annotations_old(fn)
+
+            for sample, is_segmented in samples:
+                img_name = f"{sample}.jpg"
+                img_path = os.path.join(self.path, "train_images", img_name)
+
+                if sample in annotations:
+                    rle = list(map(int, annotations[sample].split(" ")))
+                    pos_samples.append((None, None, None, is_segmented, img_path, rle, sample))
+                else:
+                    neg_samples.append((None, None, None, True, img_path, None, sample))
         self.pos_samples = pos_samples
         self.neg_samples = neg_samples
 

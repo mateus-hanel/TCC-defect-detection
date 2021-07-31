@@ -1,4 +1,7 @@
 *.png
+*.jpg
 *.pyc
 *.pyb
+*.zip
 results/
+datasets/STEEL/

@@ -3,7 +3,7 @@ import pickle
 import glob
 from random import shuffle
 
-fn = f"KSDD2/split_126.pyb"
+fn = f"KSDD2/split_16.pyb"
 with open(f"splits/{fn}", "rb") as f:
     train_samples, test_samples = pickle.load(f)
 
@@ -11,7 +11,7 @@ with open(f"splits/{fn}", "rb") as f:
 with open('defect_list.pyb', "rb") as f:
     defect_list= pickle.load(f)
 
-dst_path = ".\splits\KSDD2\split_126_normal.pyb"
+dst_path = ".\splits\KSDD2\split_16_synthetic_normal.pyb"
 
 train_paths = [r".\datasets\KSDD2\train"]
 
@@ -37,7 +37,7 @@ for i, train_path in enumerate(train_paths):
                 is_fully_labeled = train_samples[index][1]
                 train_names.append((image_name, is_fully_labeled))
 len(train_names)-2331
-train_paths_mask_aug = [r".\datasets\KSDD2\synthetic_train_monochrome"]
+train_paths_mask_aug = [r".\datasets\KSDD2\synthetic_train_normal_16"]
 for i, train_path in enumerate(train_paths_mask_aug):
     image_names = glob.glob(train_path + "\*[!_GT].png")
     for image_name in image_names:
