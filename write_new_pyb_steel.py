@@ -1,11 +1,14 @@
 import numpy as np
-import pickle
+import pickle5 as pickle
 import glob
 from random import shuffle
 import os
-fn = f"STEEL/split_300_10.pyb"
+fn = f"STEEL/split_300_150_flip.pyb"
 with open(f"splits/{fn}", "rb") as f:
     train_images, test_images, validation_images = pickle.load(f)
+validation_image
+train_images[1]
+train_images
 # Validation é no
 # Tentar editar apenas o train e o validation
 dst_path = ".\splits\STEEL\split_300_10_new.pyb"

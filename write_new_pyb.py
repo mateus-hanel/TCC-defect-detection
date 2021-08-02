@@ -48,4 +48,3 @@ with open(".\\splits\\KSDD2\\split_0_new.pyb", "rb") as f:
     foo = pickle.load(f)
 len(foo[0])+3*246
 train_samples
-'''
