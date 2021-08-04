@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-KSDD_PATH="./datasets/KSDD/"
 DAGM_PATH="./datasets/DAGM/"
 STEEL_PATH="./datasets/STEEL/"
 KSDD2_PATH="./datasets/KSDD2/"
@@ -9,6 +8,7 @@ KSDD2_SMALL_PATH="./datasets/KSDD2_SMALL/"
 
 train_KSDD()
 {
+	KSDD_PATH=$1;shift
     SAVE_IMAGES=$1;shift
     RUN_NAME=$1; shift
     RESULTS_PATH=$1; shift

@@ -23,13 +23,19 @@ class KSDDDataset(Dataset):
         self.read_contents()
 
     def read_contents(self):
+        
         pos_samples, neg_samples = [], []
+
+        if self.kind == "TRAIN":
+            path = self.path
+        else:
+            path = self.path + "TEST//"
 
         folders = read_split(self.cfg.TRAIN_NUM, self.cfg.NUM_SEGMENTED, self.cfg.FOLD, self.kind)
         for f, is_segmented in folders:
-            for sample in sorted(os.listdir(os.path.join(self.path, f))):
+            for sample in sorted(os.listdir(os.path.join(path, f))):
                 if not sample.__contains__('label'):
-                    image_path = self.path + '/' + f + '/' + sample
+                    image_path = path + '/' + f + '/' + sample
                     seg_mask_path = f"{image_path[:-4]}_label.bmp"
                     image = self.read_img_resize(image_path, self.grayscale, self.image_size)
                     seg_mask, positive = self.read_label_resize(seg_mask_path, self.image_size, dilate=self.cfg.DILATE)
