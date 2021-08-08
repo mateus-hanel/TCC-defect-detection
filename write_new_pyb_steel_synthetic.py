@@ -3,21 +3,14 @@ import pickle
 import glob
 from random import shuffle
 
-fn = f"STEEL/split_300_150_flip_defect.pyb"
+fn = f"STEEL/split_300_50_new.pyb"
 with open(f"splits/{fn}", "rb") as f:
     train_images, test_images, validation_images = pickle.load(f)
-len(validation_images)
-defect_list = glob.glob(r".\datasets\STEEL\split_300_defects\*.jpg")
-defect_list_name = []
-for defect in defect_list:
-    defect_list_name.append(defect.split("\\")[-1])
-validation_images
-dst_path = ".\splits\STEEL\split_300_300_flip_defect.pyb"
+
+dst_path = ".\splits\STEEL\split_300_50_synthetic_2.pyb"
 
 train_paths = [r".\datasets\STEEL\split_300_all",
-               r".\datasets\STEEL\split_300_all_180",
-               r".\datasets\STEEL\split_300_all_horizontal",
-               r".\datasets\STEEL\split_300_all_vertical"]
+               r".\datasets\STEEL\split_300_synthetic_50_2"]
 
 original_split_path = ".\\datasets\\STEEL\\train_images\\"
 
@@ -35,17 +28,12 @@ for i, train_path in enumerate(train_paths):
             is_fully_labeled = train_images[index][1]
             train_names.append((image_name, is_fully_labeled))
     else:
-        image_names = glob.glob(train_path + "\*[!_GT].jpg")
+        image_names = glob.glob(train_path + "\*[!_GT].*")
         for image_name in image_names:
             name = image_name.split("\\")[-1]
-
-            if name in defect_list_name:
-                j+=1
-                print(j)
-                original_name = original_split_path + name
-                index = train_original_names.index(original_name)
-                is_fully_labeled = train_images[index][1]
-                train_names.append((image_name, is_fully_labeled))
+            is_fully_labeled = True
+            train_names.append((image_name, is_fully_labeled))
+print(len(train_names) - len(train_images))
 
 shuffle(train_names)
 # Store data (serialize)

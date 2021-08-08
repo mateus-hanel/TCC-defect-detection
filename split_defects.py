@@ -4,21 +4,22 @@ import glob
 import pickle
 from shutil import copyfile
 
-src = r'.\datasets\KSDD2\train_defects'
-dst = r'.\datasets\KSDD2\train_defects_16'
+src = r'.\datasets\STEEL\split_300_defects_300'
+dst = r'.\datasets\STEEL\split_300_defects_10'
 
-fn = f"KSDD2/split_16.pyb"
+fn = f"STEEL/split_300_10.pyb"
 with open(f"splits/{fn}", "rb") as f:
-    train_samples, test_samples = pickle.load(f)
+    train_samples, test_samples, val_samples = pickle.load(f)
 train_original_names =[row[0] for row in train_samples]
+train_samples
 
-
-image_names = glob.glob(src + "\*[!_GT].png")
+image_names = glob.glob(src + "\*[!_GT].jpg")
 
 for image_name in image_names:
     image = image_name.split("\\")[-1][:-4]
-    name = int(image)
+    name = image
     index = train_original_names.index(name)
+
     is_fully_labeled = train_samples[index][1]
 
     if is_fully_labeled:
